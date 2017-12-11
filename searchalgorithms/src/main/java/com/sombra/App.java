@@ -1,13 +1,10 @@
 package com.sombra;
 import com.sombra.algorithms.Dijkstra;
-import org.graphstream.graph.*;
-import org.graphstream.graph.implementations.SingleGraph;
 
-/**
- * Hello world!
- *
- */
-public class App 
+import java.util.List;
+import java.util.Map;
+
+public class App
 {
     public static void main( String[] args )
     {
@@ -23,22 +20,7 @@ public class App
         Dijkstra dijkstra = new Dijkstra();
         dijkstra.setNodeCount(countOfNodes);
         dijkstra.setGraph(graphData);
-        dijkstra.calculate(0);
-        Graph graph = new SingleGraph("Dijkstra");
-
-        for (int i = 0; i < countOfNodes; i++) {
-            Node n = graph.addNode(String.valueOf(i));
-            n.addAttribute("ui.label", String.valueOf(i));
-        }
-        for (int i = 0; i < countOfNodes; i++) {
-            for (int j = 0; j < countOfNodes; j++) {
-                if (i != j && graphData[i][j] != null) {
-                    Edge edge = graph.addEdge(i + "_" + j, String.valueOf(i), String.valueOf(j));
-                    edge.addAttribute("ui.label", String.valueOf(graphData[i][j]));
-                }
-            }
-        }
-
-        graph.display();
+        Map<Integer, List<Integer>> result = dijkstra.calculate(0);
+        result.keySet().forEach(key -> GraphDisplay.displayPath("Path to " + key, countOfNodes, graphData, result.get(key)));
     }
 }

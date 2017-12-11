@@ -1,13 +1,9 @@
 package com.sombra.algorithms;
 
-import java.util.Arrays;
+import java.util.*;
 
-import static java.lang.Math.min;
 import static java.util.Arrays.fill;
 
-/**
- * Created by bogdan on 05-Dec-17.
- */
 public class Dijkstra {
     private int INF = Integer.MAX_VALUE / 2;
     private int nodeCount;
@@ -29,30 +25,39 @@ public class Dijkstra {
         this.graph = graph;
     }
 
-    public void calculate(int start) {
+    public Map<Integer, List<Integer>> calculate(int start) {
+        Map<Integer, List<Integer>> result =  new HashMap<>();
         boolean[] used = new boolean[nodeCount];
         int[] dist = new int[nodeCount];
 
         fill(dist, INF);
         dist[start] = 0;
+        result.put(0, new LinkedList<>(Arrays.asList(0)));
 
         for (; ; ) {
-            int v = -1;
-            for (int nv = 0; nv < nodeCount; nv++) {
-                if (!used[nv] && dist[nv] < INF && (v == -1 || dist[v] > dist[nv])) {
-                    v = nv;
+            int currentNode = -1;
+            for (int nodeIndex = 0; nodeIndex < nodeCount; nodeIndex++) {
+                if (!used[nodeIndex] && dist[nodeIndex] < INF && (currentNode == -1 || dist[currentNode] > dist[nodeIndex])) {
+                    currentNode = nodeIndex;
                 }
             }
-            if (v == -1) {
+            if (currentNode == -1) {
                 break;
             }
-            used[v] = true;
-            for (int nv = 0; nv < nodeCount; nv++) {
-                if (!used[nv] && graph[v][nv] != null && graph[v][nv] < INF) {
-                    dist[nv] = min(dist[nv], dist[v] + graph[v][nv]);
+            used[currentNode] = true;
+            for (int nodeIndex = 0; nodeIndex < nodeCount; nodeIndex++) {
+                if (!used[nodeIndex] && graph[currentNode][nodeIndex] != null && graph[currentNode][nodeIndex] < INF) {
+                    if ( dist[currentNode] + graph[currentNode][nodeIndex] < dist[nodeIndex]) {
+                        List<Integer> path = new LinkedList<>(result.get(currentNode));
+                        path.add(nodeIndex);
+                        result.put(nodeIndex, path);
+                        dist[nodeIndex] = dist[currentNode] + graph[currentNode][nodeIndex];
+                    } else {
+                        dist[nodeIndex] = dist[nodeIndex];
+                    }
                 }
             }
         }
-        System.out.println(Arrays.asList(dist));
+        return result;
     }
 }
