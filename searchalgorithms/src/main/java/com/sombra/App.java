@@ -33,7 +33,7 @@ public class App
         for (int i = 0; i < countOfNodes; i++) {
             for (int j = 0; j < countOfNodes; j++) {
                 if (i != j && graphData[i][j] != null) {
-                    Edge edge = graph.addEdge(i + "_" + j, i, j);
+                    Edge edge = graph.addEdge(i + "_" + j, String.valueOf(i), String.valueOf(j));
                     edge.addAttribute("ui.label", String.valueOf(graphData[i][j]));
                 }
             }
