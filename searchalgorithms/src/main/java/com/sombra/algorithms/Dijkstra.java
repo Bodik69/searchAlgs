@@ -32,7 +32,7 @@ public class Dijkstra {
 
         fill(dist, INF);
         dist[start] = 0;
-        result.put(0, new LinkedList<>(Arrays.asList(0)));
+        result.put(start, new LinkedList<>(Arrays.asList(start)));
 
         for (; ; ) {
             int currentNode = -1;

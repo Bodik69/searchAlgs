@@ -1,4 +1,5 @@
 package com.sombra;
+import com.sombra.algorithms.BFA;
 import com.sombra.algorithms.Dijkstra;
 
 import java.util.List;
@@ -21,6 +22,10 @@ public class App
         dijkstra.setNodeCount(countOfNodes);
         dijkstra.setGraph(graphData);
         Map<Integer, List<Integer>> result = dijkstra.calculate(0);
+        BFA bfa = new BFA();
+        bfa.setNodeCount(countOfNodes);
+        bfa.setGraph(graphData);
+        Map<Integer, List<Integer>> result2 = bfa.calculate(0);
         result.keySet().forEach(key -> GraphDisplay.displayPath("Path to " + key, countOfNodes, graphData, result.get(key)));
     }
 }
