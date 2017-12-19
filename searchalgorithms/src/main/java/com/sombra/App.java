@@ -1,8 +1,5 @@
 package com.sombra;
-import com.sombra.algorithms.BFA;
-import com.sombra.algorithms.BFS;
-import com.sombra.algorithms.Dijkstra;
-import com.sombra.algorithms.PPA;
+import com.sombra.algorithms.*;
 
 import java.util.*;
 
@@ -25,9 +22,9 @@ public class App
         dijkstra.setNodeCount(countOfNodes);
         dijkstra.setGraph(graphData);
         Map<Integer, List<Integer>> dijkstraResult = dijkstra.calculate(0);
-        ///dijkstraResult.keySet().forEach(key -> GraphDisplay.displayPath("Path to " + key, countOfNodes, graphData, dijkstraResult.get(key)));
+        //dijkstraResult.keySet().forEach(key -> GraphDisplay.displayPath("Path to " + key, countOfNodes, graphData, dijkstraResult.get(key)));
 
-        PPA ppa = new PPA(countOfNodes, graphData);
+        /*PPA ppa = new PPA(countOfNodes, graphData);
         Set<Edge> result = ppa.calculate(0);
         GraphDisplay.displayPPA("PPA", countOfNodes, graphData, result, ppa.getUsedEdges());
         boolean exit = false;
@@ -57,7 +54,7 @@ public class App
                     System.out.println("incorrect option");
                 }
             }
-        }
+        }*/
 
         BFA bfa = new BFA();
         bfa.setNodeCount(countOfNodes);
@@ -71,6 +68,13 @@ public class App
         bfs.setGraph(graphData);
         List<Integer> BFSResult = bfs.calculate(0, 5);
         //GraphDisplay.displayPath("Path to " + 5, countOfNodes, graphData, BFSResult);
+
+        Yen yen= new Yen();
+        yen.setNodeCount(countOfNodes);
+        yen.setGraph(graphData);
+        List<List<Integer>> yenResult = yen.calculate(0, 7, 3);
+        yenResult.forEach(result -> GraphDisplay.displayPath("Path to " + 7, countOfNodes, graphData, result));
+
 
     }
 }
