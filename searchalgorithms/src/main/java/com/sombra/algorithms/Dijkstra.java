@@ -6,8 +6,16 @@ import static java.util.Arrays.fill;
 
 public class Dijkstra {
     private int INF = Integer.MAX_VALUE / 2;
-    private int nodeCount;
-    private Integer[][] graph;
+        private int nodeCount;
+        private Integer[][] graph;
+
+    public Dijkstra() {
+    }
+
+    public Dijkstra(int nodeCount, Integer[][] graph) {
+        this.nodeCount = nodeCount;
+        this.graph = graph;
+    }
 
     public int getNodeCount() {
         return nodeCount;
@@ -23,6 +31,14 @@ public class Dijkstra {
 
     public void setGraph(Integer[][] graph) {
         this.graph = graph;
+    }
+
+    public int getDistance(List<Integer> path) {
+        int result = 0;
+        for (int i = 0; i < path.size() - 1; i++) {
+            result += graph[path.get(i)][path.get(i + 1)];
+        }
+        return result;
     }
 
     public Map<Integer, List<Integer>> calculate(int start) {
