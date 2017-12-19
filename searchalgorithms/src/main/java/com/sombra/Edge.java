@@ -23,6 +23,14 @@ public class Edge {
         this.pairEdge = pairEdge;
     }
 
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
     public int getStart() {
         return start;
     }

@@ -2,10 +2,8 @@ package com.sombra.algorithms;
 
 import com.sombra.Edge;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by bogdan on 19-Dec-17.
@@ -19,6 +17,13 @@ public class PPA {
     private Set<Edge> unusedEdges = new HashSet<>();
     private Map<Integer, List<Integer>> dijkstraResult;
 
+    public Integer[][] getGraph() {
+        return graph;
+    }
+
+    public void setGraph(Integer[][] graph) {
+        this.graph = graph;
+    }
 
     public Set<Edge> getAllEdges() {
         return allEdges;
@@ -110,6 +115,41 @@ public class PPA {
             }
         });
         calculateWeight(start);
+        return allEdges;
+    }
+
+    private Edge getEdge(int start, int end) {
+        Optional<Edge> first = this.allEdges.stream().filter(edge -> edge.equals(new Edge(start, end, null))).findFirst();
+        return first.orElse(null);
+    }
+
+    private List<Edge> getListOfParent (Edge edge) {
+        return this.allEdges.stream().filter(item -> item.getPairEdge() != null && item.getPairEdge().equals(edge)).collect(Collectors.toList());
+    }
+
+    public Set<Edge> addChange(int startVertex, int endVertex, int newWeight) {
+        Edge edge = getEdge(startVertex, endVertex);
+        if (usedEdges.contains(edge) && newWeight <= edge.getWeight() && newWeight >= graph[startVertex][endVertex]) {
+            graph[startVertex][endVertex] = newWeight;
+            graph[endVertex][startVertex] = newWeight;
+            if (edge.getPairEdge() != null) {
+                Edge pairEdge = getEdge(edge.getPairEdge().getStart(), edge.getPairEdge().getEnd());
+                pairEdge.setWeight(pairEdge.getWeight() + (newWeight - edge.getValue()));
+            }
+        } else {
+            if (unusedEdges.contains(edge) && newWeight >= edge.getWeight() && newWeight <= graph[startVertex][endVertex]) {
+                graph[startVertex][endVertex] = newWeight;
+                graph[endVertex][startVertex] = newWeight;
+                getListOfParent(edge).forEach(item -> item.setWeight(item.getWeight() + (edge.getWeight() - newWeight)));
+            } else {
+                graph[startVertex][endVertex] = newWeight;
+                graph[endVertex][startVertex] = newWeight;
+                this.allEdges.clear();
+                this.usedEdges.clear();
+                this.unusedEdges.clear();
+                this.calculate(0);
+            }
+        }
         return allEdges;
     }
 }

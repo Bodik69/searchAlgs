@@ -30,6 +30,34 @@ public class App
         PPA ppa = new PPA(countOfNodes, graphData);
         Set<Edge> result = ppa.calculate(0);
         GraphDisplay.displayPPA("PPA", countOfNodes, graphData, result, ppa.getUsedEdges());
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("Choose option:");
+            System.out.println("Add change (1):");
+            System.out.println("Exit (2):");
+            Scanner in = new Scanner(System.in);
+            int option = in.nextInt();
+            switch (option) {
+                case 1: {
+                    System.out.println("Start vertex:");
+                    int start = in.nextInt();
+                    System.out.println("End vertex:");
+                    int end = in.nextInt();
+                    System.out.println("New weight:");
+                    int newWeight = in.nextInt();
+                    Set<Edge> newResult = ppa.addChange(start, end, newWeight);
+                    GraphDisplay.displayPPA("PPA", countOfNodes, ppa.getGraph(), newResult, ppa.getUsedEdges());
+                    break;
+                }
+                case 2: {
+                    exit = true;
+                    break;
+                }
+                default: {
+                    System.out.println("incorrect option");
+                }
+            }
+        }
 
         BFA bfa = new BFA();
         bfa.setNodeCount(countOfNodes);
